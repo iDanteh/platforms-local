@@ -1,0 +1,107 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.div-account{
+    padding: 20px;
+    flex: 1;
+    transition: margin-left 0.3s ease;
+    margin-left: 65px;
+    margin-top: 10px;
+    gap: 25px;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.div-account h1{
+    color: aliceblue;
+}
+.div-account .search-container{
+    display: flex;
+    margin-right: 20px;
+    margin-left: 60%;
+    margin-bottom: 20px;
+}
+.search-container input {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.search-results {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.search-results li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+}
+
+.search-results li:last-child {
+    border-bottom: none;
+}
+
+.search-results li:hover {
+    background-color: #ddd;
+}
+
+.search-container svg {
+    font-size: 24px;
+    color: #333;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.search-container button {
+    font-size: 16px;
+    border-radius: 20px;
+    padding: 8px 16px;
+    background-color: #8026a1ad;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table-container {
+    width: 100%;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
+
+.table-accounts {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-accounts th,
+.table-accounts td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table-accounts th {
+    background-color: #8026a1ad;
+    color: white;
+}
+
+.table-accounts tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table-accounts tr:hover {
+    background-color: #ddd;
+}

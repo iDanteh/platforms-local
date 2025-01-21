@@ -1,0 +1,94 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.div-head h1{
+    color: aliceblue;
+    text-align: center;
+    width: 100%;
+}
+.div-register-admin {
+    margin-top: 25px;
+    margin-left: 20px;
+    border-radius: 15px;
+    border: 2px solid rgba(242, 151, 247, 0.368);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    width: 700px;
+    height: 500px;
+    align-items: center;
+    align-content: center;
+    margin-left: 50%;
+    margin-top: 15%;
+}
+.div-register-form{
+    margin-bottom: 20px;
+    border-radius: 10px;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    font-size: 18px;
+}
+.div-register-form label{
+    text-align: left;
+    width: 250px;
+    color: antiquewhite;
+}
+.div-register-form .div-box-admin{
+    width: 450px;
+    display: flex;
+    align-content: center;
+    margin-left: 20%;
+    border: 2px solid rgba(104, 53, 107, 0.368);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    padding: 10px;
+    border-radius: 10px;
+    color: black;
+    font-weight: bold;
+    align-items: center;
+}
+.div-register-form  .div-box-admin input{
+    border-radius: 10px;
+    font-size: 18px;
+    height: 30px;
+    width: 100%;
+    border: none;
+    padding-left: 10px;
+}
+.div-register-form .btn-register-admin{
+    margin-top: 15px;
+    font-size: 16px;
+    border-radius: 10px;
+    height: 35px;
+    width: 180px;
+    background: #3f58d5;
+    color: white;
+    margin-left: 50px;
+    border-style: none;
+    box-shadow: 0 2px 2px black;
+}
+.div-register-form .btn-register-admin:hover{
+    background: #6a77b8;
+    cursor: pointer;
+}
+.password-div{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.icon{
+    margin-left: 8px;
+    cursor: pointer;
+    width: 30px;
+}
+.back-icon{
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+}
+.div-head{
+    display: flex;
+    align-items: center;
+    align-content: center;
+    padding: 5px;
+    margin-left: 30px;
+}

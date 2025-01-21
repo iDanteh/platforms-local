@@ -1,0 +1,139 @@
+/* Variables de colores*/
+:root {
+    --primary-color: #4e54c8; /* Degradado inicial */
+    --secondary-color: #8f94fb; /* Degradado final */
+    --hover-color: rgba(255, 255, 255, 0.2);
+    --text-color: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo general para navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    z-index: 1000;
+    box-shadow: 4px 0 15px var(--shadow-color);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Ocultar barra lateral */
+.navbar.hidden {
+    transform: translateX(-100%);
+}
+
+/* Navbar header */
+.navbar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 1.5em;
+    color: var(--text-color);
+}
+
+/* Botones del menú */
+.menu-toggle {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.8em;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    
+}
+
+.menu-toggle:hover {
+    transform: scale(1.1);
+}
+
+/* Navigation menu */
+.navbar nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Separación entre enlaces */
+}
+
+.navbar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.navbar nav ul li {
+    margin: 10px 0;
+}
+
+.navbar nav ul li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1.2em;
+    display: block;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #5266cd;
+}
+
+.navbar nav ul li a:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-3px);
+}
+
+/* Botón flotante para mostrar la barra lateral */
+.navbar-show-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--text-color);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    transition: transform 0.3s ease, background 0.3s ease;
+    z-index: 1100;
+}
+
+.navbar-show-button:hover {
+    transform: rotate(180deg) scale(1.1); /* Animación para rotar botón*/
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        width: 200px;
+    }
+
+    .navbar nav ul li a {
+        font-size: 1em;
+    }
+
+    .navbar-show-button {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
+    }
+}

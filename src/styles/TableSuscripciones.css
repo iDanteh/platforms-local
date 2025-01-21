@@ -1,0 +1,32 @@
+.table-container {
+    width: 100%;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+}
+
+.subscriptions-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.subscriptions-table th,
+.subscriptions-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.subscriptions-table th {
+    background-color: #8026a1ad;
+    color: white;
+}
+
+.subscriptions-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.subscriptions-table tr:hover {
+    background-color: #ddd;
+}

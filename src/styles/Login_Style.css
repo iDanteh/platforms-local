@@ -1,0 +1,153 @@
+body {
+    /*display: flex;*/
+    justify-content: center;
+    position: absolute;
+    align-items: center;
+    min-height: 100vh;
+    /*margin: 0;*/
+    background-image: url("../assets/images/back2.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: row; /* Cambié a fila para mostrar el formulario y QR en línea */
+    justify-content: center;
+    align-items: center;
+    width: 900px; /* Ajusta el tamaño según lo que necesites */
+    background-color: transparent;
+    backdrop-filter: blur(20px);
+    border-radius: 15px;
+    border: 2px solid rgba(242, 151, 247, 0.368);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    color: rgb(0, 0, 0);
+    padding: 30px 40px;
+    max-width: 100%;
+    height: auto;
+    margin-left: 40%;
+    margin-top: 15%;
+}
+
+.login-container h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-container .input-box {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    margin: 50px 0;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: 2px solid rgba(249, 215, 251, 0.368);
+    border-radius: 40px;
+    outline: none;
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+    padding: auto;
+    padding-left: 10px;
+}
+
+.input-box label {
+    position: relative;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    pointer-events: none;
+    transition: 0.5s;
+}
+
+.input-box input::placeholder {
+    color: rgb(90, 88, 88);
+}
+
+.input-box .icon {
+    position: absolute;
+    right: 20px;
+    top: 100%;
+    transform: translateY(-50%);
+    font-size: 25px;
+}
+
+.check-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-container input {
+    margin-right: 5px;
+}
+
+.register-link {
+    font-size: 14px;
+    text-align: right;
+}
+
+.register-link p {
+    margin: 0;
+}
+
+.register-link p a {
+    color: #000;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-link p a:hover {
+    text-decoration: underline;
+}
+.register-link span{
+    cursor: pointer;
+}
+
+.login-container button {
+    width: 100%;
+    height: 40px;
+    background: transparent;
+    border: none;
+    border-radius: 40px;
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.qr-container {
+    margin-left: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.qr-container h2 {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    color: #060606;
+}
+
+.qr-container .whatsapp-icon {
+    font-size: 50px; /* Ajusta el tamaño del ícono */
+    color: #25D366;  /* Color típico de WhatsApp */
+    margin-top: 20px;
+    cursor: pointer;
+}
