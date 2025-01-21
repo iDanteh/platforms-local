@@ -14,6 +14,14 @@ function Login() {
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
+    const [qrCode, setQrCode] = useState('');
+  const [status, setStatus] = useState('Escaneando código QR...');
+
+  useEffect(() => {
+    // Escuchar el QR y el estado de WhatsApp desde el proceso principal
+    window.electronAPI.onQRCode((qrCode) => setQrCode(qrCode));
+    window.electronAPI.onWhatsAppReady((message) => setStatus(message));
+  }, []);
 
     useEffect(() => {
         const savedEmail = localStorage.getItem('rememberEmail');
@@ -115,6 +123,10 @@ function Login() {
 
                     <button type="submit">Iniciar sesión</button>
                 </form>
+                <div className="qr-section">
+        <h2>Escanea el código QR con WhatsApp</h2>
+        {qrCode ? <img src={qrCode} alt="QR Code" /> : <p>{status}</p>}
+      </div>
             </div>
         </div>
     );

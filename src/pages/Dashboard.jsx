@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getSubscription, calculateDaysRemaining, sendWhatsAppMessage, handleAutoReminder} from '../services/suscripcionService.js'
 import NetflixLogo from '../assets/svg/netflix-3.svg';
 import OfficeLogo from '../assets/svg/office-2.svg';
 import HBOLogo from '../assets/svg/hbo-4.svg';

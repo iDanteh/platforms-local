@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getSubscription, sendWhatsAppMessage, updateSubscription, calculateDaysRemaining, handleAutoReminder, useLocalStorage } from '../services/suscripcionService';
+import { calculateDaysRemaining} from '../services/suscripcionService';
 import { FaWhatsapp, FaEdit  } from 'react-icons/fa';
 import Modal from '../components/Modal.jsx';
 import ModalUpdate from '../components/ModalUpdateSub.jsx'

@@ -2,8 +2,10 @@ const path = require('path');
 const { app, BrowserWindow, ipcMain } = require('electron');
 const mysql = require('mysql2/promise');
 const isDev = process.env.IS_DEV == "true";
-
+const { Client } = require('whatsapp-web.js');
+const qrcode = require('qrcode');
 let dbConnection;
+let whatsappClient;
 
 // Crear la conexión a MySQL
 async function connectToDatabase() {
@@ -20,6 +22,71 @@ async function connectToDatabase() {
         app.quit(); // Salir de la aplicación si la conexión falla
     }
 }
+
+// Configurar y manejar WhatsApp
+async function initializeWhatsappClient(mainWindow) {
+    whatsappClient = new Client();
+
+    whatsappClient.on('qr', async (qr) => {
+        // Generar el código QR y enviarlo al frontend
+        const qrCodeDataUrl = await qrcode.toDataURL(qr);
+        mainWindow.webContents.send('whatsapp-qr', qrCodeDataUrl); // Enviar QR al frontend
+    });
+
+    whatsappClient.on('ready', () => {
+        console.log('WhatsApp está listo!');
+        mainWindow.webContents.send('whatsapp-ready', 'WhatsApp está listo!');
+    });
+
+    try {
+        await whatsappClient.initialize();
+    } catch (error) {
+        console.error('Error al inicializar WhatsApp:', error);
+    }
+}
+
+async function createWindow() {
+    try {
+        const mainWindow = new BrowserWindow({
+            width: 1024,
+            height: 800,
+            autoHideMenuBar: true,
+            resizable: false,
+            webPreferences: {
+                preload: path.join(__dirname, 'preload.js'),
+                contextIsolation: true,
+                enableRemoteModule: false,
+                nodeIntegration: false,
+            },
+        });
+
+        mainWindow.loadURL(
+            isDev
+                ? 'http://localhost:3000'  // Revisa si este puerto está accesible
+                : `file://${path.join(__dirname, '../dist/index.html')}`
+        );
+        initializeWhatsappClient(mainWindow);
+        mainWindow.webContents.openDevTools();
+
+        console.log('Ventana de Electron creada y cargada correctamente');
+    } catch (error) {
+        console.error('Error al crear la ventana de Electron:', error);
+    }
+}
+
+app.whenReady().then(async () => {
+    await connectToDatabase();
+    createWindow();
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    });
+});
+
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
+});
 
 async function validateUser(email, password) {
     const [rows] = await dbConnection.execute(
@@ -172,46 +239,4 @@ ipcMain.handle('getAllSubscriptions', async (event) => {
 ipcMain.handle('updateSubscription', async (event, updatedData) => {
     console.log('Datos de la suscripción actualizada:', updatedData);
     return await updateSubscription(updatedData);
-});
-
-async function createWindow() {
-    try {
-        const mainWindow = new BrowserWindow({
-            width: 1024,
-            height: 800,
-            autoHideMenuBar: true,
-            resizable: false,
-            webPreferences: {
-                preload: path.join(__dirname, 'preload.js'),
-                contextIsolation: true,
-                enableRemoteModule: false,
-                nodeIntegration: false,
-            },
-        });
-
-        mainWindow.loadURL(
-            isDev
-                ? 'http://localhost:3000'  // Revisa si este puerto está accesible
-                : `file://${path.join(__dirname, '../dist/index.html')}`
-        );
-        mainWindow.webContents.openDevTools();
-
-        console.log('Ventana de Electron creada y cargada correctamente');
-    } catch (error) {
-        console.error('Error al crear la ventana de Electron:', error);
-    }
-}
-
-app.whenReady().then(async () => {
-    await connectToDatabase();
-    createWindow();
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow();
-    });
-});
-
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
 });
