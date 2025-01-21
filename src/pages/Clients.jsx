@@ -14,16 +14,26 @@ function Clients() {
 
     const handleToggleNav = (isHidden) => setIsNavHidden(isHidden);
 
-    const loadClients = async () => {
+    function loadClients() {
         try {
-            const clientesRegistrados = await fetchClients();
-            setClients(clientesRegistrados);
+            //const clientesRegistrados = await fetchClients();
+            window.electronAPI.getClients().then(response => {
+                if (response.success)
+                {
+                    const clientesRegistrados = response.clients || [];
+                    console.log('Datos de los clientes: ',clientesRegistrados);
+                    setClients(clientesRegistrados);
+                }
+            }).catch(error => {
+                console.error('Error al ejecutar viewClients:', error);
+            });
         } catch (error) {
             console.error("Error al cargar los clientes:", error);
         }
     };
 
     useEffect(() => {
+        console.log('useEffect:LoadClients');
         loadClients(); 
     }, []);
 

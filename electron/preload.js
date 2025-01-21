@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getAllSubscriptions: () => ipcRenderer.invoke('getAllSubscriptions'),
   updateSubscription: (subscriptionData) => ipcRenderer.invoke('updateSubscription', subscriptionData),
   searchSubs: (searchQuery) => ipcRenderer.invoke('searchSubs', searchQuery),
+  getClients: () => ipcRenderer.invoke('viewClients'),
 
   // Nuevo evento para WhatsApp
   onQRCode: (callback) => ipcRenderer.on('whatsapp-qr', (_, qrCode) => callback(qrCode)),

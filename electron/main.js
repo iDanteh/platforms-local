@@ -48,8 +48,8 @@ async function initializeWhatsappClient(mainWindow) {
 async function createWindow() {
     try {
         const mainWindow = new BrowserWindow({
-            width: 1024,
-            height: 800,
+            width: 1650,
+            height: 850,
             autoHideMenuBar: true,
             resizable: false,
             webPreferences: {
@@ -239,4 +239,19 @@ ipcMain.handle('getAllSubscriptions', async (event) => {
 ipcMain.handle('updateSubscription', async (event, updatedData) => {
     console.log('Datos de la suscripción actualizada:', updatedData);
     return await updateSubscription(updatedData);
+});
+
+/* Visualizar clientes */
+ipcMain.handle('viewClients', async ()=>{
+    try {
+        const result = await dbConnection.execute('select * from users');
+        if (result[0].length > 0) {
+            return { success: true, clients: result[0]};
+        } else {
+            return { success: false, message: 'No se encontraron los clientes' };
+        }
+    } catch (error) {
+        console.error('Error al obtener los datos:', error);
+        return {success:false, message:'Error al obtener los clientes'};
+    }
 });
