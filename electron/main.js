@@ -57,7 +57,81 @@ async function registerClient(data) {
     }
 }
 
-// Manejar solicitudes desde el cliente
+async function registerNewSubscription(subscriptionData) {
+    try {
+        const { fk_user, fk_Platform, perfil, password, start_date, finish_date, state, phone_user, platform, name_user, email} = subscriptionData;
+        const [result] = await dbConnection.execute(
+            'INSERT INTO subscription (fk_user, fk_Platform, perfil, password, start_date, finish_date, state, phone_user, platform, name_user, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [fk_user, fk_Platform, perfil, password, start_date, finish_date, state, phone_user, platform, name_user, email]
+        );
+        return { success: true, id: result.insertId };
+    } catch (error) {
+        console.error('Error al registrar suscripción:', error);
+        return { success: false, message: 'Error al registrar suscripción' };
+        
+    }
+}
+
+async function getAllSubscriptions() {
+    try {
+        const [rows] = await dbConnection.execute(
+            'SELECT * FROM subscription'
+        );
+        return rows;
+    } catch (error) {
+        console.error('Error al obtener suscripciones:', error);
+        return [];
+        
+    }
+}
+
+async function updateSubscription(updatedData) {
+    try {
+        const { id_Subscription, fk_user, fk_Platform, perfil, password, start_date, finish_date, state, phone_user, platform, name_user, email } = updatedData;
+        await dbConnection.execute(
+            'UPDATE subscription SET fk_user = ?, fk_Platform = ?, perfil = ?, password = ?, start_date = ?, finish_date = ?, state = ?, phone_user = ?, platform = ?, name_user = ?, email = ? WHERE id_Subscription = ?',
+            [fk_user, fk_Platform, perfil, password, start_date, finish_date, state, phone_user, platform, name_user, email, id_Subscription]
+        );
+        return true;
+    } catch (error) {
+        console.error('Error al actualizar suscripción:', error);
+        return false;
+    }
+}
+
+// Buscar suscripciones por nombre de usuario
+ipcMain.handle('searchSubs', async (event, searchQuery) => {
+    try {
+        console.log('Buscando suscripciones con:', searchQuery); // Log para verificar la consulta
+        const [rows] = await dbConnection.execute(
+            'SELECT * FROM subscription WHERE name_user LIKE ?',
+            [`%${searchQuery}%`]
+        );
+        console.log('Resultados de la búsqueda:', rows); // Log para verificar los resultados
+        return rows;
+    } catch (error) {
+        console.error('Error al buscar suscripciones:', error);
+        return [];
+    }
+});
+
+// Buscar usuarios por nombre
+ipcMain.handle('searchUsers', async (event, searchQuery) => {
+    try {
+        console.log('Buscando usuarios con:', searchQuery); // Log para verificar la consulta
+        const [rows] = await dbConnection.execute(
+            'SELECT * FROM users WHERE nombre_user LIKE ?',
+            [`%${searchQuery}%`]
+        );
+        console.log('Resultados de la búsqueda:', rows); // Log para verificar los resultados
+        return rows;
+    } catch (error) {
+        console.error('Error al buscar usuarios:', error);
+        return [];
+    }
+});
+
+// Validar credenciales de inicio de sesión
 ipcMain.handle('login', async (event, email, password) => {
     console.log('Datos recibidos:', email, password);
     try {
@@ -71,21 +145,40 @@ ipcMain.handle('login', async (event, email, password) => {
     }
 });
 
+// Registrar un nuevo usuario
 ipcMain.handle('registerUser', async (event, userData) => {
     console.log('Datos recibidos en el backend:', userData);
     return await registerUser(userData);
 });
 
+// Registrar un nuevo cliente
 ipcMain.handle('registerClient', async (event, userData) => {
     console.log('Datos recibidos en el backend:', userData);
     return await registerClient(userData);
 });
 
+// Registrar una nueva suscripcion
+ipcMain.handle('registerNewSubscription', async (event, subscriptionData) => {
+    console.log('Datos de la suscrpción:', subscriptionData);
+    return await registerNewSubscription(subscriptionData);
+});
+
+// Obtener todas las suscripciones
+ipcMain.handle('getAllSubscriptions', async (event) => {
+    return await getAllSubscriptions();
+});
+
+// Actualizar una suscripción
+ipcMain.handle('updateSubscription', async (event, updatedData) => {
+    console.log('Datos de la suscripción actualizada:', updatedData);
+    return await updateSubscription(updatedData);
+});
+
 async function createWindow() {
     try {
         const mainWindow = new BrowserWindow({
-            width: 850,
-            height: 600,
+            width: 1024,
+            height: 800,
             autoHideMenuBar: true,
             resizable: false,
             webPreferences: {

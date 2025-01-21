@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import SuscripcionForm from '../components/SuscripcionForm';
 import TableSuscripciones from '../components/TableSuscripciones.jsx';
 import useSearchUsers from '../utils/useSearchUsers.js';
 import { MdPersonSearch } from "react-icons/md";
 import '../styles/Suscripciones.css';
 
-function Suscripciones({ selectedPlatform, setSelectedPlatform}) {
+function Suscripciones({ selectedPlatform, setSelectedPlatform }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [userInfo, setUserInfo] = useState(null);
 
-    const { searchResults, isLoading } = useSearchUsers(searchQuery);
+    const { searchResults, isLoading, error } = useSearchUsers(searchQuery);
 
     // Función para seleccionar un usuario
     const handleSelectUser = (user) => {
@@ -30,6 +30,9 @@ function Suscripciones({ selectedPlatform, setSelectedPlatform}) {
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <MdPersonSearch />
+                {isLoading && <p>Cargando...</p>} {/* Mostrar mensaje de carga */}
+                {error && <p>{error}</p>} {/* Mostrar errores */}
+
                 {Array.isArray(searchResults) && searchResults.length > 0 && (
                     <ul className='search-results'>
                         {searchResults.map(user => (
@@ -60,10 +63,11 @@ function Suscripciones({ selectedPlatform, setSelectedPlatform}) {
                 <SuscripcionForm
                     selectedPlatform={selectedPlatform}
                     setSelectedPlatform={setSelectedPlatform}
-                    userInfo={userInfo}/>
+                    userInfo={userInfo}
+                />
             </div>
 
-        {/* Tabla de suscripciones */}
+            {/* Tabla de suscripciones */}
             <TableSuscripciones />
 
         </div>

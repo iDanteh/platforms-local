@@ -44,17 +44,17 @@ function Dashboard({setSelectedPlatform}) {
     };
 
     // Envía los mensajes de recordatorio desde el Dashboard
-    useEffect(() => {
-        const fetchSubscriptions = async () => {
-            const subscriptions = await getSubscription();
-            subscriptions.forEach(async (subscription) => {
-                // Llama a handleAutoReminder para cada suscripción
-                await handleAutoReminder(subscription, sendWhatsAppMessage);
-            });
-        };
+    // useEffect(() => {
+    //     const fetchSubscriptions = async () => {
+    //         const subscriptions = await getSubscription();
+    //         subscriptions.forEach(async (subscription) => {
+    //             // Llama a handleAutoReminder para cada suscripción
+    //             await handleAutoReminder(subscription, sendWhatsAppMessage);
+    //         });
+    //     };
 
-        fetchSubscriptions();
-    }, []);
+    //     fetchSubscriptions();
+    // }, []);
 
     return (
         <div className="dashboard">

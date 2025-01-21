@@ -85,20 +85,23 @@ const SuscripcionForm = ({ selectedPlatform, setSelectedPlatform, userInfo }) =>
         console.log('Form data:', formData);
 
         // Llamar a la función del servicio para registrar la suscripción
-        const response = await registerSubscription(formData);
-
-        if (response?.error) {
-            setModalTitle('Error');
-            setModalMessage('Error al registrar la suscripción.');
-            setShowConfirmButton(false);
-        } else {
-            setModalTitle('Éxito');
-            setModalMessage('Suscripción registrada con éxito.');
-            await loadSubscriptions();
-            setShowConfirmButton(true);
+        try {
+            const response = await window.electronAPI.registerNewSubscription(formData);
+            if (response?.error) {
+                setModalTitle('Error');
+                setModalMessage('Error al registrar la suscripción.');
+                setShowConfirmButton(false);
+            } else {
+                setModalTitle('Éxito');
+                setModalMessage('Suscripción registrada con éxito.');
+                await loadSubscriptions();
+                setShowConfirmButton(true);
+            }
+        
+            setModalIsOpen(true);
+        } catch (error) {
+            console.log('Error al registrar la suscripción:', error);
         }
-    
-        setModalIsOpen(true); // Abrir el modal
     };
 
     

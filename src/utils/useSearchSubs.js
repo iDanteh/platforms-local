@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { fetchSubs } from './searchSubsUtil';
 
 const useSearchSubs = (searchQuery) => {
     const [searchResults, setSearchResults] = useState([]);
@@ -8,31 +7,35 @@ const useSearchSubs = (searchQuery) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (!searchQuery.trim()) {
+            if (searchQuery.trim() === '') {
                 setSearchResults([]);
                 return;
             }
-    
-            console.log('Realizando búsqueda con query:', searchQuery); // Depuración
+
             setIsLoading(true);
             setError(null);
             try {
-                const users = await fetchSubs(searchQuery);
-                setSearchResults(users);
+                // Enviamos la consulta al proceso principal para buscar usuarios
+                const subs = await window.electronAPI.searchSubs(searchQuery);
+                if (subs && subs.length > 0) {
+                    setSearchResults(subs);
+                } else {
+                    setSearchResults([]); // Si no se encuentran usuarios, limpiar resultados
+                }
             } catch (err) {
-                setError('No se pudo obtener las suscripciones.');
-                console.error('Error fetching users:', err);
+                setError('No se pudo obtener los usuarios.');
+                console.error('Error fetching subs:', err);
             } finally {
                 setIsLoading(false);
             }
         };
-    
+
         const timeoutId = setTimeout(() => {
             fetchData();
-        }, 500);
-    
+        }, 500); // Temporizador para optimizar la búsqueda en tiempo real
+
         return () => clearTimeout(timeoutId);
-    }, [searchQuery]);    
+    }, [searchQuery]);
 
     return { searchResults, isLoading, error };
 };

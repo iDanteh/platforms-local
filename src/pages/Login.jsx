@@ -3,11 +3,11 @@ import { TiUser } from 'react-icons/ti';
 import { TbPasswordUser } from 'react-icons/tb';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Importa el hook useAuth
+import { useAuth } from '../context/AuthContext';
 import '../styles/Login_Style.css';
 
 function Login() {
-    const { login } = useAuth(); // Usa el hook para acceder a la función login
+    const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
@@ -48,7 +48,7 @@ function Login() {
                     localStorage.removeItem('rememberPassword');
                 }
 
-                navigate('/dashboard'); // Redirigir a /dashboard si el login es exitoso
+                navigate('/dashboard'); 
             } else {
                 setError(response.message);
             }

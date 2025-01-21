@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { fetchUsers } from './serchUsersUtil';
 
 const useSearchUsers = (searchQuery) => {
     const [searchResults, setSearchResults] = useState([]);
@@ -16,8 +15,13 @@ const useSearchUsers = (searchQuery) => {
             setIsLoading(true);
             setError(null);
             try {
-                const users = await fetchUsers(searchQuery);
-                setSearchResults(users);
+                // Enviamos la consulta al proceso principal para buscar usuarios
+                const users = await window.electronAPI.searchUsers(searchQuery);
+                if (users && users.length > 0) {
+                    setSearchResults(users);
+                } else {
+                    setSearchResults([]); // Si no se encuentran usuarios, limpiar resultados
+                }
             } catch (err) {
                 setError('No se pudo obtener los usuarios.');
                 console.error('Error fetching users:', err);
@@ -28,7 +32,7 @@ const useSearchUsers = (searchQuery) => {
 
         const timeoutId = setTimeout(() => {
             fetchData();
-        }, 500);
+        }, 500); // Temporizador para optimizar la búsqueda en tiempo real
 
         return () => clearTimeout(timeoutId);
     }, [searchQuery]);

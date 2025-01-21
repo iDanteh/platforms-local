@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { updateSubscription } from '../services/suscripcionService';
 
 const ModalUpdateSub = ({ isOpen, subscription, onClose, onUpdate }) => {
     const [formData, setFormData] = useState({
@@ -41,29 +40,39 @@ const ModalUpdateSub = ({ isOpen, subscription, onClose, onUpdate }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         if (isSubmitting) return;
         setIsSubmitting(true);
-
+    
         console.log('handleSubmit ejecutado', subscription);
-
+    
         if (!subscription?.id_Subscription) {
             console.error('ID de suscripción no válido:', subscription);
             setIsSubmitting(false);
             return;
         }
-
+    
+        const updatedData = {
+            ...formData,
+            id_Subscription: subscription.id_Subscription, 
+            fk_user: subscription.fk_user,
+            fk_Platform: subscription.fk_Platform,
+            email: subscription.email,
+        };
+    
         try {
-            console.log('Datos de la suscripción a actualizar:', formData);
-            const updatedData = await updateSubscription(subscription.id_Subscription.toString(), formData);
-            onUpdate(updatedData);
-            onClose();
+            console.log('Datos de la suscripción a actualizar:', updatedData);
+            const result = await window.electronAPI.updateSubscription(updatedData);
+            if (result) {
+                onUpdate(updatedData); // Actualiza el estado en el padre
+                onClose(); // Cierra el modal
+            }
         } catch (error) {
             console.error('Error al actualizar la suscripción:', error);
         } finally {
             setIsSubmitting(false);
         }
-    };   
+    };
 
     if (!isOpen) return null;
 
