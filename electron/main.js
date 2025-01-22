@@ -2,7 +2,7 @@ const path = require('path');
 const { app, BrowserWindow, ipcMain} = require('electron');
 const mysql = require('mysql2/promise');
 const isDev = process.env.IS_DEV == "true";
-const { Client } = require('whatsapp-web.js');
+const { Client, MessageMedia } = require('whatsapp-web.js');
 const qrcode = require('qrcode');
 let dbConnection;
 let whatsappClient;
@@ -13,8 +13,8 @@ async function connectToDatabase() {
         dbConnection = await mysql.createConnection({
             host: 'localhost',
             user: 'root',
-            password: 'vasquez18tec',
-            //'LeninRonaldo717'
+            password: 'LeninRonaldo717',
+            //'vasquez18tec'
             database: 'platforms',
         });
         console.log('Conexión a la base de datos establecida.');
@@ -86,6 +86,33 @@ app.whenReady().then(async () => {
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
+    }
+});
+
+// Función para enviar mensaje a través de WhatsApp
+ipcMain.handle('send-whatsapp-message', async (event, { phoneNumber, message }) => {
+    try {
+        // Asegurarnos de que el número esté en formato internacional (ej. +1234567890)
+        const formattedPhoneNumber = phoneNumber.includes('@c.us') ? phoneNumber : `${phoneNumber}@c.us`;
+
+        console.log('Número de teléfono formateado:', formattedPhoneNumber);
+
+        // Obtener el chat usando el número formateado
+        const chat = await whatsappClient.getChatById(formattedPhoneNumber);
+
+        // Enviar el mensaje al chat
+        await chat.sendMessage(message);
+
+        return { success: true, message: 'Mensaje enviado correctamente' };
+    } catch (error) {
+        console.error('Error al enviar el mensaje:', error);
+
+        // Verificar si el error es un problema de wid (número de teléfono inválido)
+        if (error.message.includes('invalid wid')) {
+            return { success: false, message: 'Número de teléfono inválido o no registrado en WhatsApp' };
+        }
+
+        return { success: false, message: 'No se pudo enviar el mensaje' };
     }
 });
 

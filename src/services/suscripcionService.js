@@ -69,7 +69,7 @@ export const calculateDaysRemaining = (startDate, finishDate) => {
 
 export const handleAutoReminder = async (subscription, sendWhatsAppMessage) => {
     const { id_Subscription, phone_user, name_user, finish_date, platform } = subscription;
-    const phoneNumber = `521${phone_user}@c.us`;
+    const phoneNumber = `521${phone_user}`;
 
     const reminderKey = `reminderSent_${id_Subscription}`;
     const reminderSent = localStorage.getItem(reminderKey);
@@ -81,10 +81,10 @@ export const handleAutoReminder = async (subscription, sendWhatsAppMessage) => {
 
     const daysRemaining = calculateDaysRemaining(new Date(), finish_date);
     if (parseInt(daysRemaining) < 3) {
-        const message = `Hola ${name_user}, te recordamos que tu suscripción de ${platform} está por finalizar en menos de 3 días. Fecha de fin: ${new Date(finish_date).toLocaleDateString()}.`;
+        const message = `Hola ${name_user}, te recordamos que tu suscripción de ${platform} está por finalizar. Fecha de fin: ${new Date(finish_date).toLocaleDateString()}.`;
 
         try {
-            await sendWhatsAppMessage({ to: phoneNumber, message });
+            await window.electronAPI.sendWhatsappMessage({ phoneNumber: phoneNumber, message: message });
             console.log('Recordatorio enviado a', name_user);
             localStorage.setItem(reminderKey, 'true');
         } catch (error) {

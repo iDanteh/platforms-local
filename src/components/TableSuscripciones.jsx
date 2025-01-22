@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { calculateDaysRemaining} from '../services/suscripcionService';
+import { calculateDaysRemaining, handleAutoReminder} from '../services/suscripcionService';
 import { FaWhatsapp, FaEdit  } from 'react-icons/fa';
 import Modal from '../components/Modal.jsx';
 import ModalUpdate from '../components/ModalUpdateSub.jsx'
@@ -24,6 +24,12 @@ const TableSuscripciones = () => {
         fetchSubscriptions();
     }, []);
 
+    useEffect(() => {
+        subscriptions.forEach((subscription) => {
+            handleAutoReminder(subscription, window.electronAPI.sendWhatsappMessage);
+        });
+    }, [subscriptions]);
+
     const handleEditClick = (subscription) => {
         setSelectedSubscription(subscription);
         setModals({ ...modals, isUpdateModalOpen: true });
@@ -45,14 +51,8 @@ const TableSuscripciones = () => {
         }
     };
     /*Whatsapp */
-    const handleIconClick = (subscription) => {
-        /*
-        setSelectedSubscription(subscription);
-        setModals({ ...modals, isModalOpen: true });
-        console.log('ws',subscription);*/
-
-        
-        const phone = subscription.phone_user.replace(/\D/g, '');
+    const handleIconClick = async (subscription) => {
+        const phone = `521${subscription.phone_user.replace(/\D/g, '')}`; // Formatear número con el prefijo 521
         const message = `
             Hola ${subscription.name_user},
             Te compartimos los detalles de tu suscripción:
@@ -66,15 +66,21 @@ const TableSuscripciones = () => {
 
             ¡Gracias por confiar en nosotros!`;
 
+        try {
+            // Enviar mensaje a través del API de Electron
+            const response = await window.electronAPI.sendWhatsappMessage({ phoneNumber: phone, message: message });
 
-    const encodedMessage = encodeURIComponent(message.trim());
-
-    
-    const whatsappURL = `https://wa.me/521${phone}?text=${encodedMessage}`;
-    /*Preuba con num de nes */
-    //const whatsappURL = `https://wa.me/5219511266407?text=${encodedMessage}`;
-
-    window.open(whatsappURL, '_blank');
+            if (response.success) {
+                console.log('Mensaje enviado correctamente')
+            } else {
+                console.log(response.message)
+            }
+        } catch (error) {
+            console.error('Error al enviar el mensaje:', error);
+        } finally {
+            setModals({ ...modals, isModalOpen: false });
+            setSelectedSubscription(null);
+        }
     };
 
 

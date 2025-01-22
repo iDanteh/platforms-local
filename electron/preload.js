@@ -16,4 +16,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Nuevo evento para WhatsApp
   onQRCode: (callback) => ipcRenderer.on('whatsapp-qr', (_, qrCode) => callback(qrCode)),
   onWhatsAppReady: (callback) => ipcRenderer.on('whatsapp-ready', (_, message) => callback(message)),
+  sendWhatsappMessage: (data) => ipcRenderer.invoke('send-whatsapp-message', data),
 });
