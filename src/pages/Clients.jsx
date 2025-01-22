@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Modal from '../components/Modal.jsx';
 import ClientsForm from '../components/ClientForm.jsx'
 import '../styles/Clients_Style.css';
-import { registerClient, fetchClients , updateClient, deleteClient} from '../services/userService.js';
 import RegisterClient from '../components/RegisterClient.jsx';
 
 
@@ -39,7 +38,7 @@ function Clients() {
 
     const handleRegisterClient = async (formData) => {
         try {
-            const response = await registerClient(formData);
+            const response = await window.electronAPI.registerClient(formData);
             setModalMessage('Cliente registrado con éxito.');
             loadClients();
         } catch (error) {
@@ -51,7 +50,7 @@ function Clients() {
 
     const handleUpdateClient = async (updatedClient) =>{
         try {
-            await updateClient(updatedClient.id_User,updatedClient);
+            const response = await window.electronAPI.updateClient (updatedClient,updatedClient.id_User);
             setModalMessage('Cliente actualizado con éxito.');
             loadClients();
         } catch (error) {
@@ -63,7 +62,7 @@ function Clients() {
 
     const handleDeleteClient = async (delUser) =>{
         try {
-            await deleteClient(delUser.id_User);
+            const response = await window.electronAPI.deleteClient(delUser);
             setModalMessage('Cliente eliminado con éxito.');
             loadClients();
         } catch (error) {
@@ -78,7 +77,7 @@ function Clients() {
             <div className="clients-list">
                 {clients.length > 0 ? (
                     clients.map((client) => (
-                        <RegisterClient key={client.id_User} client={client} onUpdateClient={handleUpdateClient} onDeleteClient={handleDeleteClient}/>
+                        <RegisterClient key={client.id_User} client={client} onUpdateClient={handleUpdateClient} onDeleteClient={handleDeleteClient} loadClients={loadClients}/>
                     ))
                 ) : (
                     <p>No hay clientes registrados.</p>

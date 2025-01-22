@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
+import Modal from '../components/Modal.jsx';
 
-function RegisterClient({ client, onUpdateClient, onDeleteClient }) {
+function RegisterClient({ client,onUpdateClient, loadClients }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
     const [informacionModal, setInfoModal] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [editData, setEditData] = useState(false);
     const [editClient, setEditClient] = useState(client);
-    const [deleClient, setDelClient] = useState(client);
 
     const handleInfoClient = () => setInfoModal(true);
     const handleCloseInfoClient = () => {
@@ -20,19 +21,20 @@ function RegisterClient({ client, onUpdateClient, onDeleteClient }) {
         setEditClient((prev) => ({...prev,[name]:value}));
     }
 
-
-    const handleUpdateClient = () => {
-        onUpdateClient(editClient);
-        setEditData(false);
-        setInfoModal(false);
-    }
-
     const handleDeleteClick = () => {
         setIsDeleteModalOpen(true);
     };
 
-    const handleConfirmDelete = () => {
-        onDeleteClient(deleClient);
+    const handleConfirmDelete = async () => {
+        try {
+            const response = await window.electronAPI.deleteClient(client.id_User);
+            if (response.success) {
+                setModalMessage('Cliente eliminado con éxito.');
+                loadClients();
+            } 
+        } catch (error) {
+            setModalMessage('error al eliminar cliente.');
+        }
         setIsDeleteModalOpen(false);
     };
 
@@ -40,6 +42,12 @@ function RegisterClient({ client, onUpdateClient, onDeleteClient }) {
         setIsDeleteModalOpen(false);
     };
 
+const handleUpdateClient = () => {
+    onUpdateClient(editClient);
+    setEditData(false);
+    setInfoModal(false);
+    loadClients();
+}
     return (
         <>
             <div className="client-item" onClick={handleInfoClient}>
@@ -126,7 +134,7 @@ function RegisterClient({ client, onUpdateClient, onDeleteClient }) {
                     </div>
                 </div>
             )}
-
+            <Modal isOpen={isModalOpen} message={modalMessage} onClose={() => setIsModalOpen(false)} />
 
         </>
     );

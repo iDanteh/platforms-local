@@ -14,6 +14,7 @@ async function connectToDatabase() {
             host: 'localhost',
             user: 'root',
             password: 'LeninRonaldo717',
+            //'LeninRonaldo717'
             database: 'platforms',
         });
         console.log('Conexión a la base de datos establecida.');
@@ -253,5 +254,27 @@ ipcMain.handle('viewClients', async ()=>{
     } catch (error) {
         console.error('Error al obtener los datos:', error);
         return {success:false, message:'Error al obtener los clientes'};
+    }
+});
+/*Update  clientes*/
+ipcMain.handle('UpdateInfoClients', async (event, dataUser, idUser) => {
+    try {
+        const result = await dbConnection.execute('UPDATE users SET nombre_user = ?, apellido_pat = ?, apellido_mat, phone_user = ?, email = ?, password = ? WHERE id_User = ?', 
+            [dataUser.nombre_user, dataUser.apellido_pat,dataUser.apellido_mat,dataUser.phone_user, dataUser.email, dataUser.password, idUser]);
+
+        return { success: result[0].affectedRows > 0 };
+    } catch (error) {
+        console.error('Error actualizando cliente:', error);
+        return { success: false, message: 'Error al actualizar el cliente del id:',idUser };
+    }
+});
+/*Delete clientes */
+ipcMain.handle('deleteClient', async (event, delUser) => {
+    try {
+        const result = await dbConnection.execute('DELETE FROM users WHERE id_User = ?', [delUser]);
+        return { success: result[0].affectedRows > 0 };
+    } catch (error) {
+        console.error('Error eliminando el cliente:', error);
+        return { success: false, message: 'Error al eliminar el cliente' };
     }
 });
