@@ -19,7 +19,7 @@ function Clients() {
             window.electronAPI.getClients().then(response => {
                 if (response.success)
                 {
-                    const clientesRegistrados = response.clients || [];
+                    let clientesRegistrados = response.clients || [];
                     console.log('Datos de los clientes: ',clientesRegistrados);
                     setClients(clientesRegistrados);
                 }
@@ -39,8 +39,12 @@ function Clients() {
     const handleRegisterClient = async (formData) => {
         try {
             const response = await window.electronAPI.registerClient(formData);
-            setModalMessage('Cliente registrado con éxito.');
-            loadClients();
+            if(response.success){
+                setModalMessage(response.message || 'Cliente registrado con éxito');
+                loadClients();
+            }else{
+                setModalMessage(response.message || 'Error al registrar cliente: ');
+            }
         } catch (error) {
             setModalMessage('Error al registrar cliente. Inténtalo de nuevo.');
         } finally {
@@ -51,6 +55,7 @@ function Clients() {
     const handleUpdateClient = async (updatedClient) =>{
         try {
             const response = await window.electronAPI.updateClient (updatedClient,updatedClient.id_User);
+            console.log('id:',updatedClient.id_User);
             setModalMessage('Cliente actualizado con éxito.');
             loadClients();
         } catch (error) {

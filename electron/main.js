@@ -14,7 +14,7 @@ async function connectToDatabase() {
             host: 'localhost',
             user: 'root',
             password: 'LeninRonaldo717',
-            //'vasquez18tec'
+            //vasquez18tec
             database: 'platforms',
         });
         console.log('Conexión a la base de datos establecida.');
@@ -145,7 +145,7 @@ async function registerClient(data) {
             'INSERT INTO users (nombre_user, apellido_pat, apellido_mat, phone_user, email, password) VALUES (?, ?, ?, ?, ?, ?)',
             [nombre_user, apellido_pat, apellido_mat, phone_user, email, password]
         );
-        return { success: true, id: result.insertId };
+        return { success: true, message:'Cliente registrado', id: result.insertId };
     } catch (error) {
         console.log('Error en registro de cliente: ', error.message, error.stack);
         return { success: false, error: error.message };
@@ -249,7 +249,8 @@ ipcMain.handle('registerUser', async (event, userData) => {
 // Registrar un nuevo cliente
 ipcMain.handle('registerClient', async (event, userData) => {
     console.log('Datos recibidos en el backend:', userData);
-    return await registerClient(userData);
+    const result = await registerClient(userData);
+    return result;
 });
 
 // Registrar una nueva suscripcion
@@ -286,7 +287,7 @@ ipcMain.handle('viewClients', async ()=>{
 /*Update  clientes*/
 ipcMain.handle('UpdateInfoClients', async (event, dataUser, idUser) => {
     try {
-        const result = await dbConnection.execute('UPDATE users SET nombre_user = ?, apellido_pat = ?, apellido_mat, phone_user = ?, email = ?, password = ? WHERE id_User = ?', 
+        const result = await dbConnection.execute('UPDATE users SET nombre_user = ?, apellido_pat = ?, apellido_mat = ?, phone_user = ?, email = ?, password = ? WHERE id_User = ?', 
             [dataUser.nombre_user, dataUser.apellido_pat,dataUser.apellido_mat,dataUser.phone_user, dataUser.email, dataUser.password, idUser]);
 
         return { success: result[0].affectedRows > 0 };

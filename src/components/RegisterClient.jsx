@@ -42,11 +42,13 @@ function RegisterClient({ client,onUpdateClient, loadClients }) {
         setIsDeleteModalOpen(false);
     };
 
-const handleUpdateClient = () => {
+const handleUpdateClient = async () => {
+    
     onUpdateClient(editClient);
     setEditData(false);
     setInfoModal(false);
     loadClients();
+    //console.log('editClient:',editClient);
 }
     return (
         <>
