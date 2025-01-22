@@ -6,7 +6,7 @@ body {
     min-height: 100vh;
     /*margin: 0;*/
     background-image: url("../assets/images/back2.jpg");
-    background-size: cover;
+    background-size: 1650px 850px;
     background-repeat: no-repeat;
 }
 

@@ -1,5 +1,5 @@
 const path = require('path');
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain} = require('electron');
 const mysql = require('mysql2/promise');
 const isDev = process.env.IS_DEV == "true";
 const { Client } = require('whatsapp-web.js');
@@ -13,7 +13,7 @@ async function connectToDatabase() {
         dbConnection = await mysql.createConnection({
             host: 'localhost',
             user: 'root',
-            password: 'LeninRonaldo717',
+            password: 'vasquez18tec',
             //'LeninRonaldo717'
             database: 'platforms',
         });

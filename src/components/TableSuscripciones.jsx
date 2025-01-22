@@ -44,6 +44,39 @@ const TableSuscripciones = () => {
             console.error('Error al actualizar la suscripción:', error);
         }
     };
+    /*Whatsapp */
+    const handleIconClick = (subscription) => {
+        /*
+        setSelectedSubscription(subscription);
+        setModals({ ...modals, isModalOpen: true });
+        console.log('ws',subscription);*/
+
+        
+        const phone = subscription.phone_user.replace(/\D/g, '');
+        const message = `
+            Hola ${subscription.name_user},
+            Te compartimos los detalles de tu suscripción:
+            - Plataforma: ${subscription.platform}
+            - Perfil: ${subscription.perfil}
+            - Contraseña: ${subscription.password}
+            - Fecha Inicio: ${new Date(subscription.start_date).toLocaleDateString()}
+            - Fecha Fin: ${new Date(subscription.finish_date).toLocaleDateString()}
+            - Estado: ${subscription.state}
+            - Días Restantes: ${calculateDaysRemaining(subscription.start_date, subscription.finish_date)}
+
+            ¡Gracias por confiar en nosotros!`;
+
+
+    const encodedMessage = encodeURIComponent(message.trim());
+
+    
+    const whatsappURL = `https://wa.me/521${phone}?text=${encodedMessage}`;
+    /*Preuba con num de nes */
+    //const whatsappURL = `https://wa.me/5219511266407?text=${encodedMessage}`;
+
+    window.open(whatsappURL, '_blank');
+    };
+
 
     return (
         <div className="table-container">
@@ -83,6 +116,12 @@ const TableSuscripciones = () => {
                                         onClick={() => handleEditClick(sub)}
                                     >
                                         <FaEdit />
+                                    </button>
+                                    <button
+                                            className={`icon-button ${clickedRows[sub.id_Subscription] ? 'clicked' : ''}`}
+                                            onClick={() => handleIconClick(sub)}
+                                        >
+                                            <FaWhatsapp />
                                     </button>
                                 </td>
                             </tr>

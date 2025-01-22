@@ -16,6 +16,7 @@ function Account() {
     const handleSelectUser = (user) => {
         setSelectedUser(user);
         setSearchQuery(''); 
+        console.log('ciente seleccionado',user);
     };
 
     // Combinamos los resultados de subs y usuarios
@@ -50,7 +51,7 @@ function Account() {
             {selectedUser ? (
                 <TableAccount userName={selectedUser.name_user} userInfo={selectedUser.name_user} />
             ) : (
-                <p>Selecciona un usuario</p>
+                <p>Selecciona un usuario...</p>
             )}
         </div>
     );

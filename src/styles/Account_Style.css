@@ -12,14 +12,21 @@
     padding: 1rem;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 850px;
 }
 .div-account h1{
     color: aliceblue;
 }
+.div-account p{
+    color: aliceblue;
+    font-family: 'Trebuchet MS';
+    font-size: 16px;
+    font-style: oblique;
+}
 .div-account .search-container{
     display: flex;
     margin-right: 20px;
-    margin-left: 60%;
     margin-bottom: 20px;
 }
 .search-container input {
