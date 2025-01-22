@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { generateProfileSuggestion, generatePasswordSuggestion } from '../utils/formUtils'
-// import { registerSubscription, getSubscription } from '../services/suscripcionService';
 import Modal from '../components/Modal.jsx';
 
 const SuscripcionForm = ({ selectedPlatform, setSelectedPlatform, userInfo }) => {
@@ -17,19 +16,6 @@ const SuscripcionForm = ({ selectedPlatform, setSelectedPlatform, userInfo }) =>
     const [modalTitle, setModalTitle] = useState('');
     const [modalMessage, setModalMessage] = useState('');
     const [showConfirmButton, setShowConfirmButton] = useState(false);
-
-    // const loadSubscriptions = async () => {
-    //     const data = await getSubscription();
-    //     if (!data.error) {
-    //         setSubscriptions(data);
-    //     } else {
-    //         console.error('Error loading subscriptions:', data.message);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     loadSubscriptions();
-    // }, []);
 
     // Genera sugerencias de perfil y contraseña en tiempo real
     useEffect(() => {
@@ -94,7 +80,6 @@ const SuscripcionForm = ({ selectedPlatform, setSelectedPlatform, userInfo }) =>
             } else {
                 setModalTitle('Éxito');
                 setModalMessage('Suscripción registrada con éxito.');
-                await loadSubscriptions();
                 setShowConfirmButton(true);
             }
         

@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { handleAutoReminder } from '../services/suscripcionService'
 import NetflixLogo from '../assets/svg/netflix-3.svg';
 import OfficeLogo from '../assets/svg/office-2.svg';
 import HBOLogo from '../assets/svg/hbo-4.svg';
@@ -34,6 +35,8 @@ function Dashboard({setSelectedPlatform}) {
         { id: 13, name: 'Star+', logo: StarLogo, path: '/suscripciones' },
     ];
 
+    const [subscriptions, setSubscriptions] = useState([]);
+
     const handleNavigation = (platform) => {
         setSelectedPlatform({
             id: platform.id,
@@ -43,17 +46,24 @@ function Dashboard({setSelectedPlatform}) {
     };
 
     // Envía los mensajes de recordatorio desde el Dashboard
-    // useEffect(() => {
-    //     const fetchSubscriptions = async () => {
-    //         const subscriptions = await getSubscription();
-    //         subscriptions.forEach(async (subscription) => {
-    //             // Llama a handleAutoReminder para cada suscripción
-    //             await handleAutoReminder(subscription, sendWhatsAppMessage);
-    //         });
-    //     };
-
-    //     fetchSubscriptions();
-    // }, []);
+    const fetchSubscriptions = async () => {
+            try {
+                const response = await window.electronAPI.getAllSubscriptions();
+                setSubscriptions(response);
+            } catch (error) {
+                console.error('Error al obtener suscripciones:', error);
+            }
+        };
+    
+        useEffect(() => {
+            fetchSubscriptions();
+        }, []);
+    
+        useEffect(() => {
+            subscriptions.forEach((subscription) => {
+                handleAutoReminder(subscription, window.electronAPI.sendWhatsappMessage);
+            });
+        }, [subscriptions]);
 
     return (
         <div className="dashboard">

@@ -10,6 +10,7 @@ const TableSuscripciones = () => {
     const [clickedRows, setClickedRows] = useState({});
     const [selectedSubscription, setSelectedSubscription] = useState(null);
     const [modals, setModals] = useState({ isModalOpen: false, isUpdateModalOpen: false });
+    const [confirmationModal, setConfirmationModal] = useState({ isOpen: false, subscription: null });
 
     const fetchSubscriptions = async () => {
         try {
@@ -78,11 +79,13 @@ const TableSuscripciones = () => {
         } catch (error) {
             console.error('Error al enviar el mensaje:', error);
         } finally {
-            setModals({ ...modals, isModalOpen: false });
-            setSelectedSubscription(null);
+            setConfirmationModal({ isOpen: false, subscription: null });
         }
     };
 
+    const openConfirmationModal = (subscription) => {
+        setConfirmationModal({ isOpen: true, subscription });
+    };
 
     return (
         <div className="table-container">
@@ -125,7 +128,7 @@ const TableSuscripciones = () => {
                                     </button>
                                     <button
                                             className={`icon-button ${clickedRows[sub.id_Subscription] ? 'clicked' : ''}`}
-                                            onClick={() => handleIconClick(sub)}
+                                            onClick={() => openConfirmationModal(sub)}
                                         >
                                             <FaWhatsapp />
                                     </button>
@@ -139,6 +142,15 @@ const TableSuscripciones = () => {
                     )}
                 </tbody>
             </table>
+
+            <Modal
+                isOpen={confirmationModal.isOpen}
+                title="Confirmar Envío"
+                message={`¿Está seguro de enviar el mensaje de WhatsApp a ${confirmationModal.subscription?.name_user}?`}
+                showConfirmButton
+                onConfirm={() => handleIconClick(confirmationModal.subscription)}
+                onClose={() => setConfirmationModal({ isOpen: false, subscription: null })}
+            />
 
             <ModalUpdate
                 isOpen={modals.isUpdateModalOpen}
