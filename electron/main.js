@@ -13,14 +13,13 @@ async function connectToDatabase() {
         dbConnection = await mysql.createConnection({
             host: 'localhost',
             user: 'root',
-            password: 'LeninRonaldo717',
-            //vasquez18tec
+            password: 'vasquez18tec',
             database: 'platforms',
         });
         console.log('Conexión a la base de datos establecida.');
     } catch (error) {
         console.error('Error al conectar a la base de datos:', error);
-        app.quit(); // Salir de la aplicación si la conexión falla
+        app.quit();
     }
 }
 

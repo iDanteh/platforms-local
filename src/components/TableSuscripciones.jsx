@@ -55,20 +55,20 @@ const TableSuscripciones = () => {
     const handleIconClick = async (subscription) => {
         const phone = `521${subscription.phone_user.replace(/\D/g, '')}`; // Formatear número con el prefijo 521
         const message = `
-            Hola ${subscription.name_user},
+            🎬✨ *Hola ${subscription.name_user}*,
             Te compartimos los detalles de tu suscripción:
-            - Plataforma: ${subscription.platform}
-            - Perfil: ${subscription.perfil}
-            - Contraseña: ${subscription.password}
-            - Fecha Inicio: ${new Date(subscription.start_date).toLocaleDateString()}
-            - Fecha Fin: ${new Date(subscription.finish_date).toLocaleDateString()}
-            - Estado: ${subscription.state}
-            - Días Restantes: ${calculateDaysRemaining(subscription.start_date, subscription.finish_date)}
+            - 🎥 *Plataforma*:*${subscription.platform}*
+            - 📧 *Correo* : ${subscription.email}
+            - 👤 *Perfil* : ${subscription.perfil}
+            - 🔑 *Contraseña* : ${subscription.password}
+            - 🗓 *Fecha Inicio* : ${new Date(subscription.start_date).toLocaleDateString()}
+            - ⏳ *Fecha Fin* : ${new Date(subscription.finish_date).toLocaleDateString()}
+            - ✅ *Estado* : ${subscription.state}
+            - 🗓 *Días Restantes* : ${calculateDaysRemaining(subscription.start_date, subscription.finish_date)}
 
-            ¡Gracias por confiar en nosotros!`;
+            ¡Gracias por confiar en nosotros! 🌟💻🍿`;
 
         try {
-            // Enviar mensaje a través del API de Electron
             const response = await window.electronAPI.sendWhatsappMessage({ phoneNumber: phone, message: message });
 
             if (response.success) {

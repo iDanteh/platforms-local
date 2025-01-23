@@ -80,8 +80,11 @@ export const handleAutoReminder = async (subscription, sendWhatsAppMessage) => {
     }
 
     const daysRemaining = calculateDaysRemaining(new Date(), finish_date);
-    if (parseInt(daysRemaining) < 3) {
-        const message = `Hola ${name_user}, te recordamos que tu suscripción de ${platform} está por finalizar. Fecha de fin: ${new Date(finish_date).toLocaleDateString()}.`;
+    if (parseInt(daysRemaining) < 2) {
+        const message = `🚨✨ *Hola ${name_user}* , te recordamos que tu suscripción de *🎥${platform}* está por finalizar 
+        ⏳*Disfrútala hasta*: *${new Date(finish_date).toLocaleDateString()}* 
+        💡 ¡Renueva y sigue disfrutando de tus servicios favoritos! 🎶💻
+         ¡Gracias por ser parte de nuestra comunidad! 🌟🎥.`;
 
         try {
             await window.electronAPI.sendWhatsappMessage({ phoneNumber: phoneNumber, message: message });
