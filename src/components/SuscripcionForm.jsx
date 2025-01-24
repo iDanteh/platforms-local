@@ -113,6 +113,7 @@ const SuscripcionForm = ({ selectedPlatform, setSelectedPlatform, userInfo }) =>
                             <option value="11">Claro</option>
                             <option value="12">Paramount+</option>
                             <option value="13">Star+</option>
+                            <option value="14">Viki Rakuten</option>
                     </select>
                     <label htmlFor="Tiempo">Tiempo de suscripción</label>
                     <input

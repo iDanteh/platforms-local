@@ -64,6 +64,7 @@ const ModalUpdateSub = ({ isOpen, subscription, onClose, onUpdate }) => {
             console.log('Datos de la suscripción a actualizar:', updatedData);
             const result = await window.electronAPI.updateSubscription(updatedData);
             if (result) {
+                localStorage.removeItem(`reminderSent_${updatedData.id_Subscription}`);
                 onUpdate(updatedData); // Actualiza el estado en el padre
                 onClose(); // Cierra el modal
             }

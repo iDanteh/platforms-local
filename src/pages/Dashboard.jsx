@@ -13,7 +13,8 @@ import CrunchyLogo from '../assets/svg/crunchyroll-logo.svg';
 import AppleTVLogo from '../assets/svg/apple-tv.svg';
 import ClaroLogo from '../assets/svg/claro-1.svg';
 import ParamountLogo from '../assets/svg/paramount-3.svg';
-import StarLogo from '../assets/svg/Star+.svg';
+import StarLogo from '../assets/svg/startPlus.svg';
+import Viki from '../assets/svg/viki.jpg';
 import '../styles/Dashboard_Style.css';
 
 function Dashboard({setSelectedPlatform}) {
@@ -33,6 +34,7 @@ function Dashboard({setSelectedPlatform}) {
         { id: 11, name: 'Claro', logo: ClaroLogo, path: '/suscripciones' },
         { id: 12, name: 'Paramount', logo: ParamountLogo, path: '/suscripciones' },
         { id: 13, name: 'Star+', logo: StarLogo, path: '/suscripciones' },
+        { id: 14, name: 'Viki Rakuten', logo: Viki, path: '/suscripciones' },
     ];
 
     const [subscriptions, setSubscriptions] = useState([]);

@@ -13,7 +13,7 @@ async function connectToDatabase() {
         dbConnection = await mysql.createConnection({
             host: 'localhost',
             user: 'root',
-            password: 'vasquez18tec',
+            password: 'LeninRonaldo717',
             database: 'platforms',
         });
         console.log('Conexión a la base de datos establecida.');

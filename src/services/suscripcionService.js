@@ -1,59 +1,6 @@
 import axiosInstance from './axiosInstance.js';
 import { useState } from 'react';
 
-// export const registerSubscription = async (formData) => {
-//     try {
-//         const response = await axiosInstance.post('/suscriptions', formData);
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error al registrar la suscripción:', error);
-//         return { error: 'No se pudo registrar la suscripción. Inténtalo de nuevo más tarde.' };
-//     }
-// };
-
-// export const getSubscription = async () => {
-//     try {
-//         const response = await axiosInstance.get('/suscriptions');
-//         return response.data;
-//     } catch (error) {
-//         console.log(error);
-//         return [];        
-//     }
-// };
-
-// export const getSubscriptionNameUser = async (userId) => {
-//     try {
-//         const response = await axiosInstance.get('/suscriptions/search');
-//         return response.data;
-//     } catch (error) {
-//         console.log(error);
-//         return [];        
-//     }
-// };
-
-// export const sendWhatsAppMessage = async ({ to, message }) => {
-//     try {
-//         const response = await axiosInstance.post('/send-message', { to, message });
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error al enviar mensaje de WhatsApp:', error);
-//         throw error;
-//     }
-// };
-
-// export const updateSubscription = async (id_Subscription, formData) => {
-//     try {
-//         // Verifica que el ID sea un número o una cadena válida
-//         console.log('ID que se envía:', id_Subscription);
-
-//         const response = await axiosInstance.put(`/suscriptions/${id_Subscription}`, formData);
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error al actualizar la suscripción:', error);
-//         throw error;
-//     }
-// };
-
 // utils.js
 export const calculateDaysRemaining = (startDate, finishDate) => {
     const today = new Date().setHours(0, 0, 0, 0);
@@ -72,23 +19,49 @@ export const handleAutoReminder = async (subscription, sendWhatsAppMessage) => {
     const phoneNumber = `521${phone_user}`;
 
     const reminderKey = `reminderSent_${id_Subscription}`;
-    const reminderSent = localStorage.getItem(reminderKey);
+    const expiredKey = `expiredSent_${id_Subscription}`;
 
-    if (reminderSent || calculateDaysRemaining(new Date(), finish_date).includes('Vencida')) {
-        console.log(`Recordatorio ya enviado o suscripción vencida para ${name_user}`);
+    const reminderSent = localStorage.getItem(reminderKey);
+    const expiredSent = localStorage.getItem(expiredKey);
+
+    // Verificar si la suscripción ha caducado
+    const daysRemaining = calculateDaysRemaining(new Date(), finish_date);
+    if (daysRemaining.includes('Vencida')) {
+        if (!expiredSent) {
+            // Si no se ha enviado el mensaje de caducidad, lo enviamos
+            const message = `🚨✨ *Hola ${name_user}* , tu suscripción a *🎥${platform}* ha caducado.
+            ⏳ *Fecha de caducidad*: *${new Date(finish_date).toLocaleDateString()}*
+            💡 ¡Renueva y sigue disfrutando de tus servicios favoritos! 🎶💻
+            ¡Gracias por ser parte de nuestra comunidad! 🌟🎥.`;
+
+            try {
+                await window.electronAPI.sendWhatsappMessage({ phoneNumber: phoneNumber, message: message });
+                console.log('Mensaje de caducidad enviado a', name_user);
+                localStorage.setItem(expiredKey, 'true');
+            } catch (error) {
+                console.error('Error al enviar el mensaje de caducidad de WhatsApp:', error);
+            }
+        } else {
+            console.log(`El mensaje de caducidad ya fue enviado a ${name_user}`);
+        }
         return;
     }
 
-    const daysRemaining = calculateDaysRemaining(new Date(), finish_date);
-    if (parseInt(daysRemaining) < 2) {
+    if (parseInt(daysRemaining) <= 2) {
+        if (reminderSent) {
+            console.log(`Recordatorio ya enviado para ${name_user}`);
+            return; 
+        }
+
         const message = `🚨✨ *Hola ${name_user}* , te recordamos que tu suscripción de *🎥${platform}* está por finalizar 
         ⏳*Disfrútala hasta*: *${new Date(finish_date).toLocaleDateString()}* 
         💡 ¡Renueva y sigue disfrutando de tus servicios favoritos! 🎶💻
-         ¡Gracias por ser parte de nuestra comunidad! 🌟🎥.`;
+        ¡Gracias por ser parte de nuestra comunidad! 🌟🎥.`;
 
         try {
             await window.electronAPI.sendWhatsappMessage({ phoneNumber: phoneNumber, message: message });
             console.log('Recordatorio enviado a', name_user);
+
             localStorage.setItem(reminderKey, 'true');
         } catch (error) {
             console.error('Error al enviar el recordatorio de WhatsApp:', error);
