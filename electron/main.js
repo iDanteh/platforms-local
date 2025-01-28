@@ -12,8 +12,8 @@ async function connectToDatabase() {
     try {
         dbConnection = await mysql.createConnection({
             host: 'localhost',
-            user: 'root',
-            password: 'LeninRonaldo717',
+            user: 'root',//wicho7374
+            password: 'vasquez18tec',//barretm7374.//LeninRonaldo717
             database: 'platforms',
         });
         console.log('Conexión a la base de datos establecida.');
@@ -50,8 +50,9 @@ async function createWindow() {
         const mainWindow = new BrowserWindow({
             width: 1650,
             height: 850,
-            autoHideMenuBar: true,
+            //autoHideMenuBar: true,
             resizable: false,
+            title: "Platforms",
             webPreferences: {
                 preload: path.join(__dirname, 'preload.js'),
                 contextIsolation: true,
@@ -66,7 +67,7 @@ async function createWindow() {
                 : `file://${path.join(__dirname, '../dist/index.html')}`
         );
         initializeWhatsappClient(mainWindow);
-        mainWindow.webContents.openDevTools();
+        //mainWindow.webContents.openDevTools();
 
         console.log('Ventana de Electron creada y cargada correctamente');
     } catch (error) {
